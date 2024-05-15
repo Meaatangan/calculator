@@ -15,26 +15,23 @@
         border: 1px solid black;
         padding-top: 5px;
         padding-left: 10px;
+        height: 50px;
+        font-size: 40px;
     }
     button{
         height: 50px;
-        background-color: aliceblue;
+        background-color: white;
+        border: 1px solid lightgray;
     }
     button.operator{
-        background-color: rgb(5, 92, 92);
+        background-color: darkgray;
     }
 </style>
 <div id="app"></div>
 
-<script
-  src="https://unpkg.com/react@18/umd/react.development.js"
-  crossorigin
-></script>
-<script
-  src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
-  crossorigin
-></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <!-- babel/jsx -->
 
 <script type="text/babel">
   // function sample(a, b){
@@ -71,38 +68,22 @@
 //React callback function
 
 // parent component
-
-// for the onCLick evvent
-// function handleNumber(value){
-//     alert (value);
-// }
-
-
-
-
-// use state
-// const [calc, setCalc] = React.useState({
-//    current:'0',
-//  total:'',
-//  isInitial:true,
-// preOp:'',
-    
-// })
-
-// parent component
 function Calculator(){
+
     // for the onCLick event
 function handleNumber(value){
     // alert(value);
+
     let newValue = value;
     
     if(!calc.isInitial){
         newValue = calc.current + value;
     }
-    setCalc({current: newValue, isInitial: false});
+    setCalc({current: newValue, total: calc.total, isInitial: false, preOp: calc.preOp});
 }
    
     // const [display, setDisplay] = React.useState('0');
+
 // useState
 //useState returns an array with 2 elements, the first element is the current state value, the second element is a function that allows you to update the state value
 const [calc, setCalc] = React.useState({
@@ -111,20 +92,32 @@ const [calc, setCalc] = React.useState({
     isInitial: true,
     preOp:''
 });
+
 // handle clear button
 function handleClear(){
     setCalc({
         current: '0',
-        total: '',
+        total: '0',
         isInitial: true,
         preOp:''
     });
 }
 
+// handle an operator when a button is clicked
+function handleOperator(value){
+    const total = doCalculation();
+    setCalc({
+        current: total.toString(),
+        total: total.toString(),
+        isInitial: true, 
+        preOp: value
+    });
+}
+
 // for calculation function
 function doCalculation(){
-    let total="";
-    switch(operator){
+    let total = parseFloat(calc.total);
+    switch(calc.preOp){
         case '*':
             total *= parseFloat(calc.current); //equivalent to total = tolal * parseFloat(calc.current)
             break;
@@ -146,22 +139,26 @@ function doCalculation(){
     return(
         <div className="calculator">
             <div className="display">{calc.current}</div>
+
             <CalcButton value="7"/>
             <CalcButton value="8"/>
             <CalcButton value="9"/>
-            <CalcButton className="operator" value="*"/>
+            <CalcButton className="operator" value="*" onClick={handleOperator}/>
+
             <CalcButton value="4" onClick={handleNumber}/>
             <CalcButton value="5" onClick={handleNumber}/>
             <CalcButton value="6" onClick={handleNumber}/>
-            <CalcButton className="operator" value="/"/>
+            <CalcButton className="operator" value="/" onClick={handleOperator}/>
+
             <CalcButton value="1" onClick={handleNumber}/>
             <CalcButton value="2" onClick={handleNumber}/>
             <CalcButton value="3" onClick={handleNumber}/>
-            <CalcButton className="operator" value="+"/>
+            <CalcButton className="operator" value="+" onClick={handleOperator}/>
+
             <CalcButton value="C" onClick={handleClear}/>
             <CalcButton value="0" onClick={handleNumber}/>
-            <CalcButton className="operator" value="="/>
-            <CalcButton className="operator" value="-"/>
+            <CalcButton className="operator" value="=" onClick={handleOperator}/>
+            <CalcButton className="operator" value="-" onClick={handleOperator}/>
         </div>
     );
 }
