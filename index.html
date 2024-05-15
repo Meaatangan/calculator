@@ -81,13 +81,24 @@ function handleNumber(value){
 
 
 // use state
-// const [calc, setCalc] = React.useState({
-//     current:'0',
-//     total:'',
-//     isInitial:true,
-//     preOp:'',
+ const [calc, setCalc] = React.useState({
+     current:'0',
+     total:'',
+     isInitial:true,
+     preOp:'',
     
 // })
+
+//handle clear button
+function handleClear(){
+    setCalc({
+     current:'0',
+     total:'',
+     isInitial:true,
+     preOp:'',
+    })
+
+}
 
 // parent component
 function Calculator()  {
@@ -134,7 +145,7 @@ function Calculator()  {
             <CalcButton value="3" onClick={handleNumber}/>
             <CalcButton className="operator"value="+"/>
 
-            <CalcButton value="C" onClick={handleNumber}/>
+            <CalcButton value="C" onClick={handleClear}/>
             <CalcButton value="0" onClick={handleNumber}/>
             <CalcButton className="operator"value="="/>
             <CalcButton className="operator"value="-"/>
